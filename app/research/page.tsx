@@ -1,14 +1,64 @@
 'use client'
-import React, { useRef } from 'react';
+import React, { useRef, useState, useCallback, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Plus } from 'lucide-react';
+
+const BOUND = 5000;
+
+function clamp(value: number, min: number, max: number) {
+  return Math.min(Math.max(value, min), max);
+}
 
 export default function ResearchPage() {
-  const constraintsRef = useRef(null);
+  const viewportRef = useRef<HTMLDivElement>(null);
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [isDragging, setIsDragging] = useState(false);
+  const dragRef = useRef({ startX: 0, startY: 0, startPosX: 0, startPosY: 0 });
+
+  const handleWheel = useCallback((e: WheelEvent) => {
+    e.preventDefault();
+    setPosition((p) => ({
+      x: clamp(p.x - e.deltaX, -BOUND, BOUND),
+      y: clamp(p.y - e.deltaY, -BOUND, BOUND),
+    }));
+  }, []);
+
+  useEffect(() => {
+    const el = viewportRef.current;
+    if (!el) return;
+    el.addEventListener('wheel', handleWheel, { passive: false });
+    return () => el.removeEventListener('wheel', handleWheel);
+  }, [handleWheel]);
+
+  const handleMouseDown = useCallback((e: React.MouseEvent) => {
+    if (e.button !== 0) return;
+    dragRef.current = {
+      startX: e.clientX,
+      startY: e.clientY,
+      startPosX: position.x,
+      startPosY: position.y,
+    };
+    setIsDragging(true);
+  }, [position.x, position.y]);
+
+  useEffect(() => {
+    if (!isDragging) return;
+    const onMove = (e: MouseEvent) => {
+      const { startX, startY, startPosX, startPosY } = dragRef.current;
+      setPosition({
+        x: clamp(startPosX + e.clientX - startX, -BOUND, BOUND),
+        y: clamp(startPosY + e.clientY - startY, -BOUND, BOUND),
+      });
+    };
+    const onUp = () => setIsDragging(false);
+    window.addEventListener('mousemove', onMove);
+    window.addEventListener('mouseup', onUp);
+    return () => {
+      window.removeEventListener('mousemove', onMove);
+      window.removeEventListener('mouseup', onUp);
+    };
+  }, [isDragging]);
 
   // Define your image positions on a large 3000x2000 canvas
-  // TODO: Add more images
-  // TODO: make positions random
   const galleryImages = [
     { src: "https://images.unsplash.com/photo-1550684848-fac1c5b4e853", top: '20%', left: '45%', width: '350px', z: 10 },
     { src: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f", top: '35%', left: '60%', width: '300px', z: 20 },
@@ -20,18 +70,20 @@ export default function ResearchPage() {
 
   return (
     // 1. The Viewport (Fixed Screen)
-    <div className="relative w-screen h-screen overflow-hidden bg-[#E5E5E5] cursor-grab active:cursor-grabbing">
-
-      {/* 2. The Draggable Canvas Container */}
-      <motion.div 
-        drag
-        dragConstraints={{ left: -5000, right: 5000, top: -5000, bottom: 5000 }}
-        dragElastic={0.1}
-        dragMomentum={false}
-        className="relative w-[3000px] h-[2000px]"
+    <div
+      ref={viewportRef}
+      className="relative w-screen h-screen overflow-hidden bg-[#E5E5E5]"
+      onMouseDown={handleMouseDown}
+      style={{ cursor: isDragging ? 'grabbing' : 'grab' }}
+    >
+      {/* 2. Pannable Canvas (scroll or drag) */}
+      <motion.div
+        className="relative w-[3000px] h-[2000px] touch-none"
         style={{
+          x: position.x,
+          y: position.y,
           backgroundImage: `radial-gradient(#000 1px, transparent 1px)`,
-          backgroundSize: '60px 60px'
+          backgroundSize: '60px 60px',
         }}
       >
 
@@ -62,7 +114,7 @@ export default function ResearchPage() {
 
       {/* Optional: Scroll Indicator */}
       <div className="fixed bottom-8 left-8 text-[10px] font-mono opacity-40 uppercase tracking-widest">
-        Click and drag to explore canvas
+        Scroll or drag to explore canvas
       </div>
     </div>
   );
