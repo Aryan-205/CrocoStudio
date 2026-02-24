@@ -33,7 +33,7 @@ export default function CustomCursor() {
     <div className="pointer-events-none fixed inset-0 z-50 overflow-hidden">
       {/* Main Dot */}
       <motion.div
-        className="absolute h-2.5 w-2.5 rounded-full bg-black dark:bg-white"
+        className="absolute h-2.5 w-2.5 rounded-full bg-black"
         style={{
           translateX: cursorX,
           translateY: cursorY,
@@ -44,7 +44,7 @@ export default function CustomCursor() {
       
       {/* Trailing Ring */}
       <motion.div
-        className="absolute h-8 w-8 rounded-full border border-black dark:border-white opacity-50"
+        className="absolute h-8 w-8 rounded-full border border-black opacity-50"
         style={{
           translateX: cursorXSpring,
           translateY: cursorYSpring,

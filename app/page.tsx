@@ -1,25 +1,5 @@
-// import HeroSection from "@/components/HeroSection";
-
-
-// export default function Home() {
-//   return (
-//     <div className="min-h-screen w-full bg-neutral-100">
-//       <HeroSection />
-//       <div className="min-h-screen w-full bg-neutral-100">
-//         {/* about */}
-//         <div className="w-full h-[60vh] flex justify-between py-12 pl-4 pr-24">
-//           <div className="min-w-56 flex items-start h-full">
-//             <p className="text-2xl font-medium text-black">About</p>
-//           </div>
-//           <p className="text-8xl font-semibold text-black">Visual Precision Designed to Resonate</p>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
-
-
 import HeroSection from "@/components/HeroSection";
+import Image from "next/image";
 
 export default function Home() {
   return (
@@ -31,9 +11,14 @@ export default function Home() {
         <div className="lg:w-1/4">
           <h2 className="text-xl font-medium">About</h2>
         </div>
-        <div className="lg:w-3/4 mt-4 lg:mt-0">
-          <h1 className="text-6xl md:text-8xl font-bold tracking-tight leading-[0.9] max-w-4xl">
-            Visual precision,<br />designed to resonate
+        <div className="lg:w-3/4 mt-4 lg:mt-0 relative">
+        <h1 
+          className="text-6xl md:text-8xl font-bold tracking-tight leading-[0.9] max-w-4xl bg-clip-text text-transparent bg-cover bg-center"
+          style={{ 
+            backgroundImage: `url('https://cdn.prod.website-files.com/66c3a685de0fd85a256fe67c/690d06e3424d11deade1e808_motto-ezgif.com-optimize.gif')` 
+            }}
+          >
+            Visual precision, designed to resonate
           </h1>
         </div>
       </section>
@@ -44,12 +29,14 @@ export default function Home() {
           <p className="text-sm font-medium uppercase tracking-wider">Showreel</p>
         </div>
         <div className="lg:w-3/4 relative">
-          {/* Representative of the orange "+" cursor/icon in the screenshot */}
-          <div className="absolute -top-4 left-1/2 -translate-x-1/2 text-orange-600 text-2xl">+</div>
           <div className="w-full aspect-video bg-black overflow-hidden rounded-sm">
-            <img 
-              src="/api/placeholder/1200/675" 
-              alt="Styleframe Showreel" 
+            <video 
+              autoPlay
+              muted
+              loop
+              controls
+              playsInline
+              src="https://cdn.styleframe.de/SF_Showreel_2025_FINAL.mp4" 
               className="w-full h-full object-cover opacity-90"
             />
           </div>

@@ -20,7 +20,7 @@ const cardsData = [
 
 export default function HeroSection() {
   return (
-    <section className="min-h-screen w-full bg-neutral-100 flex items-center justify-center py-24 px-4">
+    <section className="min-h-screen overflow-hidden w-full bg-neutral-100 flex items-center justify-center py-24 px-4">
       <div
         className="relative w-full max-w-5xl flex items-center justify-center"
         style={{
