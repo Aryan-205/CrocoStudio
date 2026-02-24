@@ -21,26 +21,13 @@ export default function ResearchPage() {
   return (
     // 1. The Viewport (Fixed Screen)
     <div className="relative w-screen h-screen overflow-hidden bg-[#E5E5E5] cursor-grab active:cursor-grabbing">
-      
-      {/* Fixed Navigation (Stays on screen while you scroll) */}
-      <nav className="fixed top-0 left-0 w-full z-50 flex justify-between items-start p-8 pointer-events-none">
-        <div className="flex items-center gap-1 font-black text-2xl tracking-tighter pointer-events-auto">
-          S<span className="bg-black w-8 h-5 inline-block"></span>
-          <span className="text-[10px] -mt-3">®</span>
-        </div>
-        
-        <div className="flex gap-16 text-sm font-bold uppercase tracking-widest pointer-events-auto">
-          {['Index', 'Research', 'Studio', 'Contact'].map((item) => (
-            <button key={item} className="hover:line-through transition-all">{item}</button>
-          ))}
-        </div>
-      </nav>
 
       {/* 2. The Draggable Canvas Container */}
       <motion.div 
         drag
         dragConstraints={{ left: -5000, right: 5000, top: -5000, bottom: 5000 }}
         dragElastic={0.1}
+        dragMomentum={false}
         className="relative w-[3000px] h-[2000px]"
         style={{
           backgroundImage: `radial-gradient(#000 1px, transparent 1px)`,
