@@ -11,7 +11,7 @@ const Navbar = ({ onContactClick }: NavbarProps) => {
   return (
     <div className="fixed w-full z-50 flex justify-around items-center bg-transparent text-black text-4xl font-medium pb-8 py-4">
       <Link href={"/"}>Kushal</Link>
-      <Link href={"/index"}>Index</Link>
+      <Link href={"/items"}>Index</Link>
       <Link href={"/studio"}>Studio</Link>
       <Link href={"/research"}>Research</Link>
       {onContactClick ? (
